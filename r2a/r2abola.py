@@ -18,7 +18,7 @@ class R2ABola(IR2A):
         self.qi = []
         self.throughput = 0
         self.request_time = 0
-        self.v_m = 0
+        self.u_m = 0
 
     def handle_xml_request(self, msg):
         self.request_time = time.perf_counter()
@@ -35,7 +35,7 @@ class R2ABola(IR2A):
         self.request_time = time.perf_counter()
         
         # Parâmetro de controle para adaptar o bitrate ao tamanho do buffer/ 
-        V = (self.whiteboard.get_max_buffer_size() - 1) / (self.v_m + 5)
+        V = (self.whiteboard.get_max_buffer_size() - 1) / (self.u_m + 5)
         
         # Lista do tamanho dos buffers
         buffers = self.whiteboard.get_playback_buffer_size()
@@ -93,7 +93,7 @@ class R2ABola(IR2A):
         self.throughput = msg.get_bit_length() / t
         
         # Utilização da rede calculada por funcao logaritmica
-        self.v_m = np.log(msg.get_quality_id() / self.qi[0])
+        self.u_m = np.log(msg.get_quality_id() / self.qi[0])
         
         self.send_up(msg)
 
