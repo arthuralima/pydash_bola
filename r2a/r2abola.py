@@ -52,7 +52,7 @@ class R2ABola(IR2A):
         
         m = 0
         
-        # Seleciona indicice de qualidade(bitrate) ro dos disponiveis encontrado pela otimizacao de Lyapounov
+        # Seleciona indice de qualidade(bitrate) maximo dos disponiveis encontrado pela otimizacao de Lyapounov
         for i in range(20):
             uti = np.log(self.qi[i] / self.qi[0])
             m_prob = (V * uti + V * 5 - current_buffer[1]) / self.qi[i]
