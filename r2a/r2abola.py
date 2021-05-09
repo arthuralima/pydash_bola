@@ -52,7 +52,7 @@ class R2ABola(IR2A):
         
         m = 0
         
-        # Indicice de qualidade(bitrate) maximo dos disponiveis encontrado pela otimizacao de Lyapounov
+        # Seleciona indicice de qualidade(bitrate) ro dos disponiveis encontrado pela otimizacao de Lyapounov
         for i in range(20):
             uti = np.log(self.qi[i] / self.qi[0])
             m_prob = (V * uti + V * 5 - current_buffer[1]) / self.qi[i]
@@ -61,14 +61,16 @@ class R2ABola(IR2A):
                 selected_qi = i
         
         if playback_qi:
-            #Se o bitrate escolhido for maior que o anterior, procura um novo que seja menor ou igual ao throughput do segmento anterior ou do primeiro bitrate (o que for maior)            
+            #Se o bitrate escolhido for maior que o anterior, procura um novo que seja menor ou igual ao (throughput do segmento anterior ou do primeiro bitrate (o que for maior))            
             if selected_qi > playback_qi[-1][1]:
-                maxim = self.qi[0]
-                ml  = 0
                 if self.throughput >= self.qi[0]:
-                    maxim = self.throughput
+                    r = self.throughput
+                else: 
+                    r = self.qi[0]
+
+                ml  = 0
                 for j in range(20):
-                    if self.qi[j] <= maxim and ml  <= j:
+                    if self.qi[j] <= r and ml  <= j:
                         ml  = j
                 
                 # Se o novo bitrate estiver entre os antigos índices, ganha um novo valor, se nao recebe o mesmo valor deles
@@ -92,7 +94,7 @@ class R2ABola(IR2A):
         # Throughput da requisição do segmento de vídeo
         self.throughput = msg.get_bit_length() / t
         
-        # Utilização da rede calculada por funcao logaritmica
+        # Utilização de playback calculada por funcao logaritmica
         self.u_m = np.log(msg.get_quality_id() / self.qi[0])
         
         self.send_up(msg)
