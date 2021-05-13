@@ -51,6 +51,7 @@ class R2ABola(IR2A):
         current_buffer = buffers[-1]
         
         m = 0
+        ######################################selected_qi=0
         
         # Seleciona indice de qualidade(bitrate) maximo dos disponiveis encontrado pela otimizacao de Lyapounov
         for i in range(20):
